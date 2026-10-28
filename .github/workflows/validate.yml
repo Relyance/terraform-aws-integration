@@ -1,0 +1,66 @@
+name: Module validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - engine: terraform
+            version: 1.9.3
+          - engine: terraform
+            version: 1.13.4
+          - engine: tofu
+            version: 1.13.2
+    name: ${{ matrix.engine }} ${{ matrix.version }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd
+        if: matrix.engine == 'terraform'
+        with:
+          terraform_version: ${{ matrix.version }}
+          terraform_wrapper: false
+      - name: Install OpenTofu from its official release
+        if: matrix.engine == 'tofu'
+        env:
+          VERSION: ${{ matrix.version }}
+        run: |
+          set -euo pipefail
+          base="https://github.com/opentofu/opentofu/releases/download/v${VERSION}"
+          cd "$RUNNER_TEMP"
+          curl --fail --silent --show-error --location "$base/tofu_${VERSION}_linux_amd64.zip" -o tofu.zip
+          curl --fail --silent --show-error --location "$base/tofu_${VERSION}_SHA256SUMS" -o SHA256SUMS
+          expected="$(awk -v file="tofu_${VERSION}_linux_amd64.zip" '$2 == file {print $1}' SHA256SUMS)"
+          test -n "$expected"
+          echo "$expected  tofu.zip" | sha256sum --check
+          mkdir -p tofu-bin
+          unzip -q tofu.zip tofu -d tofu-bin
+          echo "$RUNNER_TEMP/tofu-bin" >> "$GITHUB_PATH"
+      - name: Validate module, inventory tests and examples
+        env:
+          CLI: ${{ matrix.engine }}
+          TF_IN_AUTOMATION: "true"
+        run: |
+          set -euo pipefail
+          "$CLI" fmt -check -recursive
+          "$CLI" init -backend=false -input=false
+          "$CLI" validate
+          "$CLI" test
+          while IFS= read -r file; do
+            example="$(dirname "$file")"
+            "$CLI" -chdir="$example" init -backend=false -input=false
+            "$CLI" -chdir="$example" validate
+          done < <(find examples -name main.tf -print | sort)

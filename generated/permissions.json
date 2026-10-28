@@ -1,0 +1,208 @@
+{
+  "_comment": "Generated from the Relyance supported-connector permission catalog -- do not edit by hand.",
+  "integrations": {
+    "aws_s3": {
+      "service": "Amazon S3",
+      "managed_policy_arns": [],
+      "statements": [
+        {
+          "sid": "s3_account",
+          "scope": "account",
+          "actions": [
+            "s3:ListAllMyBuckets"
+          ]
+        },
+        {
+          "sid": "s3_bucket",
+          "scope": "bucket",
+          "actions": [
+            "s3:GetBucketAcl",
+            "s3:GetBucketLocation",
+            "s3:GetBucketObjectLockConfiguration",
+            "s3:GetBucketTagging",
+            "s3:GetEncryptionConfiguration",
+            "s3:ListBucket"
+          ]
+        },
+        {
+          "sid": "s3_object",
+          "scope": "object",
+          "actions": [
+            "s3:GetObject"
+          ]
+        }
+      ]
+    },
+    "aws_dynamodb": {
+      "service": "Amazon DynamoDB",
+      "managed_policy_arns": [],
+      "statements": [
+        {
+          "sid": "dynamodb_account",
+          "scope": "account",
+          "actions": [
+            "dynamodb:ListTables"
+          ]
+        },
+        {
+          "sid": "dynamodb_table",
+          "scope": "table",
+          "actions": [
+            "dynamodb:DescribeTable",
+            "dynamodb:Query",
+            "dynamodb:Scan"
+          ]
+        }
+      ]
+    },
+    "aws_redshift": {
+      "service": "Amazon Redshift",
+      "managed_policy_arns": [],
+      "statements": [
+        {
+          "sid": "redshift_account",
+          "scope": "account",
+          "actions": [
+            "redshift-data:DescribeStatement",
+            "redshift-data:DescribeTable",
+            "redshift-data:ExecuteStatement",
+            "redshift-data:GetStatementResult",
+            "redshift-data:ListDatabases",
+            "redshift-data:ListSchemas",
+            "redshift-data:ListStatements",
+            "redshift-data:ListTables",
+            "redshift:DescribeClusters",
+            "redshift:GetClusterCredentialsWithIAM"
+          ]
+        }
+      ]
+    },
+    "aws_rds": {
+      "service": "Amazon RDS",
+      "managed_policy_arns": [],
+      "statements": [
+        {
+          "sid": "rds_account",
+          "scope": "account",
+          "actions": [
+            "rds-db:connect",
+            "rds:DescribeDBInstances"
+          ]
+        }
+      ]
+    },
+    "aws_cloudwatch": {
+      "service": "Amazon CloudWatch",
+      "managed_policy_arns": [],
+      "statements": [
+        {
+          "sid": "cloudwatch_account",
+          "scope": "account",
+          "actions": [
+            "cloudwatch:GetMetricStatistics",
+            "cloudwatch:ListMetrics"
+          ]
+        }
+      ]
+    },
+    "aws_glue": {
+      "service": "AWS Glue",
+      "managed_policy_arns": [],
+      "statements": [
+        {
+          "sid": "glue_account",
+          "scope": "account",
+          "actions": [
+            "glue:GetBlueprint",
+            "glue:GetCrawlers",
+            "glue:GetDatabase",
+            "glue:GetDatabases",
+            "glue:GetTable",
+            "glue:GetTables",
+            "glue:ListBlueprints",
+            "glue:ListCrawlers",
+            "glue:ListCrawls",
+            "glue:ListSchemas",
+            "glue:SearchTables"
+          ]
+        }
+      ]
+    },
+    "aws_ses": {
+      "service": "Amazon SES",
+      "managed_policy_arns": [],
+      "statements": [
+        {
+          "sid": "ses_account",
+          "scope": "account",
+          "actions": [
+            "ses:ListCustomVerificationEmailTemplates",
+            "ses:ListIdentities",
+            "ses:ListVerifiedEmailAddresses"
+          ]
+        }
+      ]
+    },
+    "aws_sns": {
+      "service": "Amazon SNS",
+      "managed_policy_arns": [],
+      "statements": [
+        {
+          "sid": "sns_account",
+          "scope": "account",
+          "actions": [
+            "sns:GetTopicAttributes",
+            "sns:ListOriginationNumbers",
+            "sns:ListSMSSandboxPhoneNumbers",
+            "sns:ListSubscriptions",
+            "sns:ListTopics"
+          ]
+        }
+      ]
+    },
+    "aws_xray": {
+      "service": "AWS X-Ray",
+      "managed_policy_arns": [],
+      "statements": [
+        {
+          "sid": "xray_account",
+          "scope": "account",
+          "actions": [
+            "xray:BatchGetTraces",
+            "xray:GetServiceGraph",
+            "xray:GetTraceSummaries"
+          ]
+        }
+      ]
+    },
+    "aws": {
+      "service": "AWS Full Inventory",
+      "managed_policy_arns": [
+        "arn:aws:iam::aws:policy/SecurityAudit"
+      ],
+      "statements": [
+        {
+          "sid": "inventory_account",
+          "scope": "account",
+          "actions": [
+            "bedrock:GetCustomModelDeployment",
+            "bedrock:GetModelInvocationJob",
+            "bedrock:ListCustomModelDeployments",
+            "bedrock:ListModelInvocationJobs",
+            "cloudwatch:GetMetricStatistics",
+            "glue:GetCrawler",
+            "glue:GetDatabase",
+            "glue:GetTable",
+            "glue:GetTables",
+            "lambda:GetEventSourceMapping",
+            "lambda:GetFunction",
+            "lambda:GetFunctionUrlConfig",
+            "resource-explorer-2:GetView",
+            "resource-explorer-2:ListViews",
+            "resource-explorer-2:Search"
+          ]
+        }
+      ]
+    }
+  }
+}
